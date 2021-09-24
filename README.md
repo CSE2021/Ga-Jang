@@ -4,6 +4,14 @@
 
 Catholic University CSE - Team Project
 
+## !!UPDATE!!
+
+##### 2021/09/24
+
++ index.js 에서 특정요청에 따라 라우팅 되도록 하였습니다.
++ mysql-db 관련 설정들을 database 폴더안으로 넣었습니다.
++ mysql 모듈을 설치하고, 효율적으로 db에 접근할 수 있도록 커넥션 풀을 만들었습니다.
+
 ## Install & Execution
 
 ```bash
