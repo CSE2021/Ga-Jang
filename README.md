@@ -46,8 +46,24 @@ $ docker run -p <로컬포트>:<내부포트> -d <위에서 설정한 태그명>
 
 ## How To Use..
 
-| 종류 | 매핑        | 설명                                   |
-| ---- | ----------- | -------------------------------------- |
-| Get  | /           | Test용 데이터 출력                     |
-| Get  | /users/list | account 테이블 내의 모든 정보 가져오기 |
+| 종류   | 매핑            | 설명                                                      |
+| ------ | --------------- | --------------------------------------------------------- |
+| Get    | /               | Test용 데이터 출력                                        |
+| Get    | /users/list     | accounts 테이블 내의 모든 정보 가져오기                   |
+| Get    | /users/list/:id | accounts 테이블 내에서 id값에 해당하는 유저 정보 가져오기 |
+| Post   | /users/add      | accounts 테이블에 회원정보 추가                           |
+| Delete | /users/del/:id  | accounts 테이블 내에서 id값에 해당하는 유저 정보 삭제     |
+
+#### <POST : User 정보 추가>
+
+다음과 같은 형태로 json을 전달(id : 고유키, loc : 위치정보, name : 닉네임, lating : 매너지수)
+
+```json
+{
+	"id" : string,
+	"loc" : string,
+	"name" : string,
+	"lating" : int,
+}
+```
 
