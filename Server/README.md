@@ -115,9 +115,23 @@ $ docker run -p <로컬포트>:<내부포트> -d <위에서 설정한 태그명>
 
 ```json
 //Post /board/add
+{
+    "own" : string,
+    "kind" : int,
+    "title" : string,
+    "people" : int,
+    "expiration" : date(ex 1999-09-31),
+    "price" : int,
+    "content" : string,
+    "imgUrl" : string
+}
+```
+
+```json
 //Post /board/edit
 {
     "own" : string,
+    "no" : int,
     "kind" : int,
     "title" : string,
     "people" : int,
