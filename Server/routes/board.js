@@ -38,11 +38,28 @@ router.get('/kind/:type', function(req, res, next) {
     });
 })
 
-router.post('/add', function(req, res, next) {
-    let { id, loc, name, lating } = req.body;
+router.get('/:no', function(req, res, next) {
+    let no = req.params.no;
+    var sql = "SELECT * from board WHERE no='" + no + "';"
 
-    var sql = "INSERT INTO board (id, loc, name, lating) VALUES(?, ?, ?, ?);"
-    var param = [id, loc, name, lating]
+    getConnection((conn) => {
+        conn.query(sql, function(err, result, fields) {
+            if(err) {
+                res.json("Failed");
+            }
+            else {
+                res.json(result);
+            }
+        });
+        conn.release();
+    });
+})
+
+router.post('/add', function(req, res, next) {
+    let { own, kind, title, people, expiration, price, content, imgUrl } = req.body;
+
+    var sql = "INSERT INTO board (own, kind, title, people, expiration, price, content, imgUrl) VALUES(?, ?, ?, ?, ?, ?, ?, ?);"
+    var param = [own, kind, title, people, expiration, price, content, imgUrl]
     getConnection((conn) => {
         conn.query(sql, param, function(err, rows, fields) {
             if(err) {
@@ -56,5 +73,38 @@ router.post('/add', function(req, res, next) {
         conn.release();
     });
 })
+
+router.post('/edit', function(req, res, next) {
+    let { own, no, kind, title, people, expiration, price, content, imgUrl } = req.body;
+
+    var sql = "UPDATE board SET (kind, title, people, expiration, price, content, imgUrl) = (?, ?, ?, ?, ?, ?, ?) WHERE own = ? AND no = ?;"
+    var param = [kind, title, people, expiration, price, content, imgUrl, own, no];
+    getConnection((conn) => {
+        conn.query(sql, param, function(err, rows, fields) {
+            if(err) {
+                res.json("Failed");
+            }
+            else {
+                res.json(rows.affectedRows);
+            }
+        })
+    })
+})
+
+router.delete('/del/:no', function(req, res, next) {
+    let no = req.params.no;
+    var sql = "DELETE from board where no='" + no + "';";
+    getConnection((conn) => {
+        conn.query(sql, function(err, rows, fields) {
+            if(err) {
+                res.json("Failed");
+            }
+            else {
+                res.json("success");
+            }
+        });
+        conn.release();
+    });
+});
 
 module.exports = router;

@@ -57,6 +57,57 @@ router.post('/add', function(req, res, next) {
     });
 });
 
+router.post('/edit-name', function(req, res, next) {
+    let { id, name } = req.body;
+
+    var sql = "UPDATE accounts SET name=? WHERE id=?;"
+    var param = [name, id];
+    getConnection((conn) => {
+        conn.query(sql, param, function(err, rows, fields) {
+            if(err) {
+                res.json("Failed");
+            }
+            else {
+                res.json(rows.affectedRows);
+            }
+        })
+    })
+})
+
+router.post('/edit-loc', function(req, res, next) {
+    let { id, loc } = req.body;
+
+    var sql = "UPDATE accounts SET loc=? WHERE id=?;"
+    var param = [loc, id];
+    getConnection((conn) => {
+        conn.query(sql, param, function(err, rows, fields) {
+            if(err) {
+                res.json("Failed");
+            }
+            else {
+                res.json(rows.affectedRows);
+            }
+        })
+    })
+})
+
+router.post('/edit-lating', function(req, res, next) {
+    let { id, lating } = req.body;
+
+    var sql = "UPDATE accounts SET lating=? WHERE id=?;"
+    var param = [lating, id];
+    getConnection((conn) => {
+        conn.query(sql, param, function(err, rows, fields) {
+            if(err) {
+                res.json("Failed");
+            }
+            else {
+                res.json(rows.affectedRows);
+            }
+        })
+    })
+})
+
 router.delete('/del/:id', function(req, res, next) {
     let user_id = req.params.id;
     var sql = "DELETE from accounts where id='" + user_id + "';";

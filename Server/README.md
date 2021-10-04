@@ -6,13 +6,11 @@ Catholic University CSE - Team Project
 
 ## !!UPDATE!!
 
-##### 2021/09/24
+##### 2021/10/04
 
-+ index.js 에서 특정요청에 따라 라우팅 되도록 하였습니다.
-+ db 관련 설정들을 database 폴더안으로 넣었습니다.
-+ mysql 모듈을 설치하고, 효율적으로 db에 접근할 수 있도록 커넥션 풀을 만들었습니다.
-+ 개인 서버에서 mariadb를 편리하게 지원하고 있어서 rdb로 MariaDB를 사용하였습니다.
-+ (~ing) 회원정보 암호화, 데이터 베이스 설계, 회원가입 & 로그인 기본 API 제작
++ sql 파일 좀 더 보강(foreign key에 제약조건 설정(update, delete))
++ board 테이블 api 제작, users 테이블 업데이트 가능
++ (~ing) 유저정보 암호화, api 사용 토큰 발급 공부(jwt?)
 
 ## Install & Execution
 
@@ -54,24 +52,79 @@ $ docker run -p <로컬포트>:<내부포트> -d <위에서 설정한 태그명>
 
 ## How To Use..
 
-| 종류   | 매핑            | 설명                                                      |
-| ------ | --------------- | --------------------------------------------------------- |
-| Get    | /users/         | Test용 데이터 출력                                        |
-| Get    | /users/list     | accounts 테이블 내의 모든 정보 가져오기                   |
-| Get    | /users/list/:id | accounts 테이블 내에서 id값에 해당하는 유저 정보 가져오기 |
-| Post   | /users/add      | accounts 테이블에 회원정보 추가                           |
-| Delete | /users/del/:id  | accounts 테이블 내에서 id값에 해당하는 유저 정보 삭제     |
+: accounts 테이블
 
-#### <POST : User 정보 추가>
-
-다음과 같은 형태로 json을 전달(id : 고유키, loc : 위치정보, name : 닉네임, lating : 매너지수)
+| 종류   | 매핑               | 설명                                                      |
+| ------ | ------------------ | --------------------------------------------------------- |
+| Get    | /users/            | Test용 데이터 출력                                        |
+| Get    | /users/list        | accounts 테이블 내의 모든 정보 가져오기                   |
+| Get    | /users/list/:id    | accounts 테이블 내에서 id값에 해당하는 유저 정보 가져오기 |
+| Post   | /users/add         | accounts 테이블에 회원정보 추가                           |
+| Post   | /users/edit-name   | accounts 테이블에서 닉네임 변경                           |
+| Post   | /users/edit-loc    | accounts 테이블에서 지역 변경                             |
+| Post   | /users/edit-lating | accounts 테이블에서 매너지수 변경                         |
+| Delete | /users/del/:id     | accounts 테이블 내에서 id값에 해당하는 유저 정보 삭제     |
 
 ```json
+// Post -> /users/add
 {
 	"id" : string,
 	"loc" : string,
 	"name" : string,
 	"lating" : int,
+}
+```
+
+```json
+// Post -> /users/edit-name
+{
+    "id" : string,
+    "name" : string
+}
+```
+
+```json
+//Post -> /users/edit-loc
+{
+    "id" : string,
+    "loc" : string
+}
+```
+
+```json
+//Post -> /users/edit-lating
+{
+    "id" : string,
+    "lating" : string
+}
+```
+
+
+
+: board 테이블
+
+| 종류   | 매핑              | 설명                                                   |
+| ------ | ----------------- | ------------------------------------------------------ |
+| Get    | /board/           | Test용 데이터 출력                                     |
+| Get    | /board/list       | board 테이블 내의 모든 정보 가져오기                   |
+| Get    | /board/kind/:type | board 테이블 내에서 kind 값에 해당하는 게시글 가져오기 |
+| Get    | /board/:no        | board 테이블 내에서 no에 해당하는 게시글 정보 보기     |
+| Post   | /board/add        | board 테이블 내에 정보 삽입(게시글 작성)               |
+| Post   | /board/edit       | board 테이블 내에 게시글 정보 수정                     |
+| Delete | /board/del/:no    | board 테이블 내에서 no값에 해당하는 유저 정보 삭제     |
+
+```json
+//Post /board/add
+//Post /board/edit
+{
+    "own" : string,
+    "kind" : int,
+    "title" : string,
+    "people" : int,
+    "expiration" : date(ex 1999-09-31),
+    "price" : int,
+    "content" : string,
+    "imgUrl" : string
 }
 ```
 
