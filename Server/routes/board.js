@@ -59,7 +59,7 @@ router.post('/add', function(req, res, next) {
     let { own, kind, title, people, expiration, price, content, imgUrl } = req.body;
 
     var sql = "INSERT INTO board (own, kind, title, people, expiration, price, content, imgUrl) VALUES(?, ?, ?, ?, ?, ?, ?, ?);"
-    var param = [own, kind, title, people, expiration, price, content, imgUrl]
+    var param = [own, kind, title, people, expiration, price, content, imgUrl];
     getConnection((conn) => {
         conn.query(sql, param, function(err, rows, fields) {
             if(err) {
@@ -87,7 +87,8 @@ router.post('/edit', function(req, res, next) {
             else {
                 res.json(rows.affectedRows);
             }
-        })
+        });
+        conn.release();
     })
 })
 

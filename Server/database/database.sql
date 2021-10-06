@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS cuk.chatroom (
     bno int unsigned NOT NULL,
     rno int unsigned NOT NULL AUTO_INCREMENT,
     own VARCHAR(36) NOT NULL,
-    cdate date NOT NULL,
+    cdate DATETIME NOT NULL, DEFAULT CURRENT_TIMESTAMP,
     content text,
     PRIMARY KEY (rno),
     FOREIGN KEY (bno) REFERENCES board(no) ON DELETE CASCADE,

@@ -70,7 +70,8 @@ router.post('/edit-name', function(req, res, next) {
             else {
                 res.json(rows.affectedRows);
             }
-        })
+        });
+        conn.release();
     })
 })
 
@@ -87,7 +88,8 @@ router.post('/edit-loc', function(req, res, next) {
             else {
                 res.json(rows.affectedRows);
             }
-        })
+        });
+        conn.release();
     })
 })
 
@@ -104,7 +106,8 @@ router.post('/edit-lating', function(req, res, next) {
             else {
                 res.json(rows.affectedRows);
             }
-        })
+        });
+        conn.release();
     })
 })
 
