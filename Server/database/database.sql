@@ -1,14 +1,18 @@
-CREATE DATABASE IF NOT EXISTS cuk;
-USE cuk;
+CREATE DATABASE IF NOT EXISTS gajang;
+USE gajang;
 
 -- Delete Current Table
-DROP TABLE IF EXISTS cuk.participate;
-DROP TABLE IF EXISTS cuk.chatroom;
-DROP TABLE IF EXISTS cuk.board;
-DROP TABLE IF EXISTS cuk.accounts;
+DROP TABLE IF EXISTS gajang.participate;
+DROP TABLE IF EXISTS gajang.chat;
+DROP TABLE IF EXISTS gajang.chatlist;
+DROP TABLE IF EXISTS gajang.imgurl;
+DROP TABLE IF EXISTS gajang.customerinfo;
+DROP TABLE IF EXISTS gajang.content;
+DROP TABLE IF EXISTS gajang.board;
+DROP TABLE IF EXISTS gajang.accounts;
 
 -- Create Accounts Table
-CREATE TABLE IF NOT EXISTS cuk.accounts (
+CREATE TABLE IF NOT EXISTS gajang.accounts (
     id VARCHAR(36) NOT NULL,
     loc VARCHAR(36) NOT NULL,
     name VARCHAR(16) NOT NULL,
@@ -17,40 +21,72 @@ CREATE TABLE IF NOT EXISTS cuk.accounts (
 )ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
 -- Create Board Tabel
-CREATE TABLE IF NOT EXISTS cuk.board (
-    own VARCHAR(36) NOT NULL,
-    no int unsigned NOT NULL AUTO_INCREMENT,
-    wdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    kind int NOT NULL,
+CREATE TABLE IF NOT EXISTS gajang.board (
+    bid int unsigned NOT NULL AUTO_INCREMENT,
+    wid VARCHAR(36) NOT NULL,
     title VARCHAR(36) NOT NULL,
-    people int NOT NULL,
-    expiration DATE DEFAULT NULL,
-    price int NOT NULL,
-    content text,
-    imgUrl VARCHAR(30) NOT NULL DEFAULT '',
-    PRIMARY KEY (no),
-    FOREIGN KEY (own) REFERENCES accounts(id) ON DELETE CASCADE
+    wdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    kind int(5) unsigned NOT NULL,
+    price int unsigned NOT NULL,
+    thumbnail VARCHAR(36) DEFAULT '',
+    tstate int(5) unsigned NOT NULL DEFAULT 0,
+    PRIMARY KEY (bid),
+    FOREIGN KEY (wid) REFERENCES accounts(id) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
--- Create Chatroom Table
-CREATE TABLE IF NOT EXISTS cuk.chatroom (
-    bno int unsigned NOT NULL,
-    rno int unsigned NOT NULL AUTO_INCREMENT,
-    own VARCHAR(36) NOT NULL,
-    cdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+-- Create Content Table
+CREATE TABLE IF NOT EXISTS gajang.content (
+    bid int unsigned NOT NULL,
+    fresh VARCHAR(10) NOT NULL,
+    view int unsigned NOT NULL DEFAULT 0,
+    deadline DATE,
     content text,
+    unit VARCHAR(10) NOT NULL DEFAULT '',
+    remain int unsigned NOT NULL CHECK (remain > 0),
+    minsize int unsigned NOT NULL CHECK (minsize > 0),
+    FOREIGN KEY (bid) REFERENCES board(bid) ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
+
+-- Create Customer Info Table
+CREATE TABLE IF NOT EXISTS gajang.customerinfo (
+    bid int unsigned NOT NULL,
+    cid VARCHAR(36) NOT NULL,
+    amount int unsigned NOT NULL CHECK (amount > 0),
+    deposit int(5) unsigned NOT NULL DEFAULT 0,
+    FOREIGN KEY (bid) REFERENCES board(bid) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (cid) REFERENCES accounts(id) ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
+
+-- Create img url table
+CREATE TABLE IF NOT EXISTS gajang.imgurl (
+    bid int unsigned NOT NULL,
+    imgurl VARCHAR(36) NOT NULL,
+    FOREIGN KEY (bid) REFERENCES board(bid) ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
+
+-- Create Chatroom list Table
+CREATE TABLE IF NOT EXISTS gajang.chatlist (
+    bid int unsigned NOT NULL,
+    rno int unsigned NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (rno),
-    FOREIGN KEY (bno) REFERENCES board(no) ON DELETE CASCADE,
-    FOREIGN KEY (own) REFERENCES accounts(id) ON DELETE CASCADE
+    FOREIGN KEY (bid) REFERENCES board(bid) ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
+
+-- Create ChatContent Table
+CREATE TABLE IF NOT EXISTS gajang.chat (
+    rno int unsigned NOT NULL,
+    wid VARCHAR(36) NOT NULL,
+    content text,
+    wdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (wid) REFERENCES accounts(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (rno) REFERENCES chatlist(rno) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
 -- Create participate Table
 -- Help management who(writer) : where(chatting room)
-CREATE TABLE IF NOT EXISTS cuk.participate (
-    pno int unsigned NOT NULL AUTO_INCREMENT,
-    own VARCHAR(36) NOT NULL,
+CREATE TABLE IF NOT EXISTS gajang.participate (
+    id VARCHAR(36) NOT NULL,
     rno int unsigned NOT NULL,
-    PRIMARY KEY (pno),
-    FOREIGN KEY (own) REFERENCES accounts(id) ON DELETE CASCADE,
-    FOREIGN KEY (rno) REFERENCES chatroom(rno) ON DELETE CASCADE
+    FOREIGN KEY (id) REFERENCES accounts(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (rno) REFERENCES chatlist(rno) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
