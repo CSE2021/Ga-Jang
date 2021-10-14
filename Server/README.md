@@ -46,7 +46,7 @@ $ docker run -p <로컬포트>:<내부포트> -d <위에서 설정한 태그명>
 
 ## Database 설계
 
-![캡처](https://github.com/CSE2021/Ga-Jang/blob/server/Server/database/ERD.png)
+![캡처](https://github.com/CSE2021/server/blob/main/Server/database/ERD.png)
 
 
 
