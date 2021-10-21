@@ -1,111 +1,35 @@
 var express = require('express');
 const getConnection = require('../database/database');
+const returnResults = require('../errorHandler');
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
     res.send("BOARD API TEST");
 })
 
-router.get('/list', function(req, res, next) {
-    var sql = "SELECT * from board;"
-    getConnection((conn) => {
-        conn.query(sql, function(err, results, fields) {
-            if(err) {
-                res.json("Failed");
-            }
-            else {
-                res.json(results);
-            }
-        });
-        conn.release();
-    });
-})
-
-router.get('/kind/:type', function(req, res, next) {
-    let type = req.params.type;
-    var sql = "SELECT * from board WHERE kind='" + kind + "';"
-
+router.get('/list/:page', function(req, res, next) {
+    let page = req.params.page;
+    var num = parseInt((page-1) * 10);
+    var sql = "SELECT * from board ORDER BY wdate desc limit " + num + ", 10;"
     getConnection((conn) => {
         conn.query(sql, function(err, result, fields) {
-            if(err) {
-                res.json("Failed");
-            }
-            else {
-                res.json(result);
-            }
+            returnResults(err, res, result);
         });
         conn.release();
     });
 })
 
-router.get('/:no', function(req, res, next) {
-    let no = req.params.no;
-    var sql = "SELECT * from board WHERE no='" + no + "';"
+router.get('/kind', function(req, res, next) {
+    let { kind, page } = req.body;
+    var sql = "SELECT * from board WHERE kind=? limit ?, 10;"
+    var param = [kind, page];
 
     getConnection((conn) => {
-        conn.query(sql, function(err, result, fields) {
-            if(err) {
-                res.json("Failed");
-            }
-            else {
-                res.json(result);
-            }
+        conn.query(sql, param, function(err, result, fields) {
+            returnResults(err, res, result);
         });
         conn.release();
     });
 })
-
-router.post('/add', function(req, res, next) {
-    let { own, kind, title, people, expiration, price, content, imgUrl } = req.body;
-
-    var sql = "INSERT INTO board (own, kind, title, people, expiration, price, content, imgUrl) VALUES(?, ?, ?, ?, ?, ?, ?, ?);"
-    var param = [own, kind, title, people, expiration, price, content, imgUrl];
-    getConnection((conn) => {
-        conn.query(sql, param, function(err, rows, fields) {
-            if(err) {
-                res.json("Failed");
-            }
-            else {
-                res.json(rows.affectedRows);
-            }
-
-        });
-        conn.release();
-    });
-})
-
-router.post('/edit', function(req, res, next) {
-    let { own, no, kind, title, people, expiration, price, content, imgUrl } = req.body;
-
-    var sql = "UPDATE board SET (kind, title, people, expiration, price, content, imgUrl) = (?, ?, ?, ?, ?, ?, ?) WHERE own = ? AND no = ?;"
-    var param = [kind, title, people, expiration, price, content, imgUrl, own, no];
-    getConnection((conn) => {
-        conn.query(sql, param, function(err, rows, fields) {
-            if(err) {
-                res.json("Failed");
-            }
-            else {
-                res.json(rows.affectedRows);
-            }
-        });
-        conn.release();
-    })
-})
-
-router.delete('/del/:no', function(req, res, next) {
-    let no = req.params.no;
-    var sql = "DELETE from board where no='" + no + "';";
-    getConnection((conn) => {
-        conn.query(sql, function(err, rows, fields) {
-            if(err) {
-                res.json("Failed");
-            }
-            else {
-                res.json("success");
-            }
-        });
-        conn.release();
-    });
-});
 
 module.exports = router;
