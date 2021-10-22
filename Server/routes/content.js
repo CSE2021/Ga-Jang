@@ -18,24 +18,25 @@ router.get('/:bid', function(req, res, next) {
 router.post('/add', function(req, res, next) {
     let { wid, title, kind, price, thumbnail, fresh, deadline, content, unit, remain, minsize } = req.body;
 
-    var sql = "INSERT INTO board (wid, title, kind, price, thumbnail) VALUES(?, ?, ?, ?, ?);";
-    var param = [wid, title, kind, price, thumbnail];
-    var pk = 0;
-    getConnection((conn) => {
-        conn.query(sql, param, function(err, result, fields) {
-            if(err) {
-                returnResults(err, res, result);
-            }
-            else {
-                sql = "INSERT INTO content (bid, fresh, deadline, content, unit, remain, minsize) VALUES(LAST_INSERT_ID(), ?, ?, ?, ?, ?, ?);";
-                param = [fresh, deadline, content, unit, remain, minsize];
-                
-                conn.query(sql, param, function(err, result, fields) {
-                        returnResults(err, res, result);
-                });
-            }
-        });
-        conn.release();
+    var sql1 = "INSERT INTO board (wid, title, kind, price, thumbnail) VALUES(?, ?, ?, ?, ?);";
+    var sql2 = "INSERT INTO content (bid, fresh, deadline, content, unit, remain, minsize) VALUES(LAST_INSERT_ID(), ?, ?, ?, ?, ?, ?);";
+    var param1 = [wid, title, kind, price, thumbnail];
+    var param2 = [fresh, deadline, content, unit, remain, minsize];
+    getConnection(async (conn) => {
+        try {
+            await conn.beginTransaction();
+
+            const ins1 = await conn.query(sql1, param1);
+            const ins2 = await conn.query(sql2, param2);
+
+            await conn.commit();
+            returnResults(false, res, ins2);
+        } catch(err) {
+            returnResults(err, res, ins2);
+            await conn.rollback();
+        } finally {
+            conn.release();
+        }
     });
 })
 
