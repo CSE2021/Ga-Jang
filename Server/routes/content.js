@@ -5,12 +5,18 @@ var router = express.Router();
 
 router.get('/:bid', async function(req, res, next) {
     let bid = req.params.bid;
-    var sql = "SELECT * from board WHERE no='" + bid + "';"
+    var sql1 = "SELECT * from board WHERE bid='" + bid + "';"
+    var sql2 = "UPDATE content SET view = view+1 where bid='" + bid + "';";
     const conn = await pool.getConnection();
     try {
-        const sel = await conn.query(sql);
+        await conn.beginTransaction();
+        const sel = await conn.query(sql1);
+        const upd = await conn.query(sql2);
+        
+        await conn.commit();
         returnResults(false, res, sel[0]);
     } catch (err) {
+        await conn.rollback();
         returnResults(err, res, {});
     } finally {
         conn.release();
@@ -44,8 +50,8 @@ router.post('/add', async function(req, res, next) {
 router.post('/edit', async function(req, res, next) {
     let { bid, wid, title, kind, price, thumbnail, fresh, deadline, content, unit, remain, minsize } = req.body;
 
-    var sql1 = "UPDATE board SET (title, kind, price, thumbnail) = (?, ?, ?, ?) WHERE bid=? and wid=?;";
-    var sql2 = "UPDATE content SET (fresh, deadline, content, unit, remain, minsize) = (?, ?, ?, ?, ?, ?) WHERE bid=?;";
+    var sql1 = "UPDATE board SET title = ?, kind = ?, price = ?, thumbnail = ? WHERE bid=? and wid=?;";
+    var sql2 = "UPDATE content SET fresh=?, deadline=?, content=?, unit=?, remain=?, minsize=? WHERE bid=?;";
     var param1 = [title, kind, price, thumbnail, bid, wid];
     var param2 = [fresh, deadline, content, unit, remain, minsize, bid];
     const conn = await pool.getConnection();
