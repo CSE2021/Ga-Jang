@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS gajang.accounts (
     id VARCHAR(36) NOT NULL,
     loc VARCHAR(36) NOT NULL,
     name VARCHAR(16) NOT NULL,
-    lating int(10) NOT NULL,
+    rating int(10) NOT NULL,
     PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
@@ -26,10 +26,12 @@ CREATE TABLE IF NOT EXISTS gajang.board (
     wid VARCHAR(36) NOT NULL,
     title VARCHAR(36) NOT NULL,
     wdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    edate DATETIME NOT NULL,
     kind int(5) unsigned NOT NULL,
     price int unsigned NOT NULL,
     thumbnail VARCHAR(36) DEFAULT '',
     tstate int(5) unsigned NOT NULL DEFAULT 0,
+    process VARCHAR(16) DEFAULT 'reservation',
     PRIMARY KEY (bid),
     FOREIGN KEY (wid) REFERENCES accounts(id) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
@@ -52,6 +54,7 @@ CREATE TABLE IF NOT EXISTS gajang.customerinfo (
     bid int unsigned NOT NULL,
     cid VARCHAR(36) NOT NULL,
     amount int unsigned NOT NULL CHECK (amount > 0),
+    dTime DATETIME NOT NULL,
     deposit int(5) unsigned NOT NULL DEFAULT 0,
     FOREIGN KEY (bid) REFERENCES board(bid) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (cid) REFERENCES accounts(id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -64,29 +67,17 @@ CREATE TABLE IF NOT EXISTS gajang.imgurl (
     FOREIGN KEY (bid) REFERENCES board(bid) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
--- Create Chatroom list Table
-CREATE TABLE IF NOT EXISTS gajang.chatlist (
-    bid int unsigned NOT NULL,
-    rno int unsigned NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY (rno),
-    FOREIGN KEY (bid) REFERENCES board(bid) ON DELETE CASCADE ON UPDATE CASCADE
-)ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
+CREATE TABLE IF NOT EXISTS gajang.comment (
 
--- Create ChatContent Table
-CREATE TABLE IF NOT EXISTS gajang.chat (
-    rno int unsigned NOT NULL,
-    wid VARCHAR(36) NOT NULL,
-    content text,
-    wdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (wid) REFERENCES accounts(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (rno) REFERENCES chatlist(rno) ON DELETE CASCADE ON UPDATE CASCADE
-)ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
+)
 
--- Create participate Table
--- Help management who(writer) : where(chatting room)
-CREATE TABLE IF NOT EXISTS gajang.participate (
-    id VARCHAR(36) NOT NULL,
-    rno int unsigned NOT NULL,
-    FOREIGN KEY (id) REFERENCES accounts(id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (rno) REFERENCES chatlist(rno) ON DELETE CASCADE ON UPDATE CASCADE
-)ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
+CREATE EVENT
+    IF NOt EXISTS 'deleteExpirationData'
+ON SCHEDULE
+    EVERY 1 DAY
+ON COMPLETION NOT PRESERVE
+    ENABLE
+COMMENT '공구 기간 만료 데이터 삭제'
+    DO
+    'DELETE FROM board WHERE edate = CURDATE();'
+    END
