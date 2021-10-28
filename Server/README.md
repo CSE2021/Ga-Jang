@@ -1,22 +1,18 @@
 # 집단지성 RESTFul-API
 
-![Generic badge](https://img.shields.io/badge/Node.js-14.7.5-green.svg) ![Generic badge](https://img.shields.io/badge/NPM-6.14.14-red.svg)![Generic badge](https://img.shields.io/badge/MariaDB-10.3.29-blue.svg)
+![Generic badge](https://img.shields.io/badge/Node.js-14.7.5-green.svg) ![Generic badge](https://img.shields.io/badge/NPM-6.14.14-red.svg)![Generic badge](https://img.shields.io/badge/MariaDB-10.3.29-blue.svg) 
 
 Catholic University CSE - Team Project
 
 ## !!UPDATE!!
 
-##### 2021/10/21
+##### 2021/10/28
 
-+ 데이터베이스 설계 최적화(게시글 테이블 분할 -> 게시글 리스트, 게시글 내용, 이미지 링크)
-+ 데이터베이스 테이블 추가(각 게시글 별로 구매자가 있을 경우 구매자들 정보를 요약해서 볼 수 있도록..)
-+ API 수정 ex)게시글 작성시 2개의 테이블에 정보입력!! 게시글 리스트 + 게시글 내용
-+ 쓸모없는 API 전부 제거
-+ DB 커넥션과정에서 sql 구문 실행시 성공, 실패를 관리할 errorhandler 펑션 추가
-+ 테이블 두 개 이상 접근시 트랜잭션 구현으로 어느 하나라도 오류발생시 SQL 롤백
-+ (~ing) 웹소켓 Studying... + 채팅 db 역시 분할 
-  + 어떤 사람이 어떤 채팅방에 참여중인지 알 수 있는 participate 테이블
-  + 채팅내용 전부 담는 테이블
++ 웹 채팅 삭제 -> 특별한 소통이 필요없고, 요즘은 추가적인 SNS 이미 발달되어있음. 웹에서의 채팅은 무의미 하다고 여겨서 덧글, 또는 다른 방식으로 서비스를 제공할 필요가 있어보임. 오히려 채팅 없이 사용자가 필요한 모든 정보를 제공함으로 사용자의 편리성을 증가시킬 수 있도록 설계
++ 데이터베이스의 테이블의 세부 컬럼 변경 및 테이블 삭제 및 추가(알림 관리용 테이블이 추가).
++ API 내부의 SQL 문 수정(컬럼이 변경되었기 때문,,)
++ 데이터베이스 내부적으로 이벤트 스케줄러를 사용하여 필요없는 데이터는 주기적으로 삭제
++ ERD 수정,,,
 
 ```bash
 $ node index.js
