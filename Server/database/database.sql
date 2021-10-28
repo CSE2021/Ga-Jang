@@ -2,9 +2,7 @@ CREATE DATABASE IF NOT EXISTS gajang;
 USE gajang;
 
 -- Delete Current Table
-DROP TABLE IF EXISTS gajang.participate;
-DROP TABLE IF EXISTS gajang.chat;
-DROP TABLE IF EXISTS gajang.chatlist;
+DROP TABLE IF EXISTS gajang.notice;
 DROP TABLE IF EXISTS gajang.imgurl;
 DROP TABLE IF EXISTS gajang.customerinfo;
 DROP TABLE IF EXISTS gajang.content;
@@ -17,6 +15,7 @@ CREATE TABLE IF NOT EXISTS gajang.accounts (
     loc VARCHAR(36) NOT NULL,
     name VARCHAR(16) NOT NULL,
     rating int(10) NOT NULL,
+    accountNo VARCHAR(36) NOT NULL,
     PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
@@ -24,14 +23,14 @@ CREATE TABLE IF NOT EXISTS gajang.accounts (
 CREATE TABLE IF NOT EXISTS gajang.board (
     bid int unsigned NOT NULL AUTO_INCREMENT,
     wid VARCHAR(36) NOT NULL,
+    kind int unsigned NOT NULL DEFAULT 0,
+    thumbnail VARCHAR(255) DEFAULT '',
     title VARCHAR(36) NOT NULL,
     wdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    edate DATETIME NOT NULL,
-    kind int(5) unsigned NOT NULL,
-    price int unsigned NOT NULL,
-    thumbnail VARCHAR(36) DEFAULT '',
-    tstate int(5) unsigned NOT NULL DEFAULT 0,
-    process VARCHAR(16) DEFAULT 'reservation',
+    process smallint NOT NULL DEFAULT 0,
+    edate DATE NOT NULL,
+    mPrice int unsigned NOT NULL CHECK (mprice > 0),
+    remain int unsigned NOT NULL CHECK (remain > 0),
     PRIMARY KEY (bid),
     FOREIGN KEY (wid) REFERENCES accounts(id) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
@@ -39,13 +38,14 @@ CREATE TABLE IF NOT EXISTS gajang.board (
 -- Create Content Table
 CREATE TABLE IF NOT EXISTS gajang.content (
     bid int unsigned NOT NULL,
-    fresh VARCHAR(10) NOT NULL,
+    siteurl VARCHAR(255) DEFAUlT '',
     view int unsigned NOT NULL DEFAULT 0,
-    deadline DATE,
+    price int NOT NULL CHECK(price > 0),
     content text,
-    unit VARCHAR(10) NOT NULL DEFAULT '',
-    remain int unsigned NOT NULL CHECK (remain > 0),
-    minsize int unsigned NOT NULL CHECK (minsize > 0),
+    cnt int unsigned NOT NULL DEFAULT 1,
+    place VARCHAR(36) NOT NULL,
+    tm TIME NOT NULL DEFAULT '000000',
+    PRIMARY KEY (bid),
     FOREIGN KEY (bid) REFERENCES board(bid) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
@@ -53,9 +53,10 @@ CREATE TABLE IF NOT EXISTS gajang.content (
 CREATE TABLE IF NOT EXISTS gajang.customerinfo (
     bid int unsigned NOT NULL,
     cid VARCHAR(36) NOT NULL,
-    amount int unsigned NOT NULL CHECK (amount > 0),
+    oprice int unsigned NOT NULL CHECK (oprice > 0),
     dTime DATETIME NOT NULL,
-    deposit int(5) unsigned NOT NULL DEFAULT 0,
+    dstate int unsigned NOT NULL DEFAULT 0,
+    PRIMARY KEY (bid, cid),
     FOREIGN KEY (bid) REFERENCES board(bid) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (cid) REFERENCES accounts(id) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
@@ -67,17 +68,35 @@ CREATE TABLE IF NOT EXISTS gajang.imgurl (
     FOREIGN KEY (bid) REFERENCES board(bid) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
-CREATE TABLE IF NOT EXISTS gajang.comment (
+CREATE TABLE IF NOT EXISTS gajang.notice (
+    id VARCHAR(36) NOT NULL,
+    bid int unsigned NOT NULL,
+    wdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    content VARCHAR(255) NOT NULL DEFAULT 'error',
+    href VARCHAR(255),
+    FOREIGN KEY (bid) REFERENCES board(bid) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (id) REFERENCES accounts(id) ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
-)
-
-CREATE EVENT
-    IF NOt EXISTS 'deleteExpirationData'
-ON SCHEDULE
-    EVERY 1 DAY
-ON COMPLETION NOT PRESERVE
+/*
+-- Database OPT Event
+CREATE EVENT IF NOT EXISTS postStatusChange
+    ON SCHEDULE
+        EVERY 1 DAY
+        STARTS CURRENT_TIMESTAMP
+    ON COMPLETION PRESERVE
     ENABLE
-COMMENT '공구 기간 만료 데이터 삭제'
+    COMMENT '모집 기간 만료 데이터 상태 변경'
     DO
-    'DELETE FROM board WHERE edate = CURDATE();'
-    END
+    UPDATE board SET process=1 WHERE edate=CURDATE();
+
+CREATE EVENT IF NOT EXISTS noticeDelete
+    ON SCHEDULE
+        EVERY 1 DAY
+        STARTS CURRENT_TIMESTAMP
+    ON COMPLETION PRESERVE
+    ENABLE
+    COMMENT '7일이 지난 알림은 삭제됩니다.'
+    DO
+    DELETE FROM notice where wdate <= date_sub(CURDATE(), INTERVAL 7 DAY)
+*/
