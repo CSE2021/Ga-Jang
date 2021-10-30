@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS gajang.accounts;
 -- Create Accounts Table
 CREATE TABLE IF NOT EXISTS gajang.accounts (
     id VARCHAR(36) NOT NULL,
+    email VARCHAR(64) NOT NULL,
     loc VARCHAR(36) NOT NULL,
     name VARCHAR(16) NOT NULL,
     rating int(10) NOT NULL,
@@ -23,39 +24,39 @@ CREATE TABLE IF NOT EXISTS gajang.accounts (
 CREATE TABLE IF NOT EXISTS gajang.board (
     bid int unsigned NOT NULL AUTO_INCREMENT,
     wid VARCHAR(36) NOT NULL,
-    kind int unsigned NOT NULL DEFAULT 0,
     thumbnail VARCHAR(255) DEFAULT '',
     title VARCHAR(36) NOT NULL,
     wdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     process smallint NOT NULL DEFAULT 0,
-    edate DATE NOT NULL,
+    recruit DATE NOT NULL,
+    recruite DATE NOT NULL,
+    ship DATE NOT NULL,
+    shipe DATE NOT NULL,
+    share DATE NOT NULL,
+    sharee DATE NOT NULL,
+    place VARCHAR(36) NOT NULL,
+    sharetime TIME NOT NULL DEFAULT '000000',
     mPrice int unsigned NOT NULL CHECK (mprice > 0),
     remain int unsigned NOT NULL CHECK (remain > 0),
-    PRIMARY KEY (bid),
-    FOREIGN KEY (wid) REFERENCES accounts(id) ON DELETE CASCADE ON UPDATE CASCADE
-)ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
-
--- Create Content Table
-CREATE TABLE IF NOT EXISTS gajang.content (
-    bid int unsigned NOT NULL,
     siteurl VARCHAR(255) DEFAUlT '',
     view int unsigned NOT NULL DEFAULT 0,
-    price int NOT NULL CHECK(price > 0),
+    goal int NOT NULL CHECK(goal > 0),
+    collect int NOT NULL CHECK(collect > 0),
     content text,
     cnt int unsigned NOT NULL DEFAULT 1,
-    place VARCHAR(36) NOT NULL,
-    tm TIME NOT NULL DEFAULT '000000',
     PRIMARY KEY (bid),
-    FOREIGN KEY (bid) REFERENCES board(bid) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (wid) REFERENCES accounts(id) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
 -- Create Customer Info Table
 CREATE TABLE IF NOT EXISTS gajang.customerinfo (
     bid int unsigned NOT NULL,
     cid VARCHAR(36) NOT NULL,
+    quantity int NOT NULL,
     oprice int unsigned NOT NULL CHECK (oprice > 0),
     dTime DATETIME NOT NULL,
     dstate int unsigned NOT NULL DEFAULT 0,
+    getitem int unsigned NOT NULL DEFAULT 0,
     PRIMARY KEY (bid, cid),
     FOREIGN KEY (bid) REFERENCES board(bid) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (cid) REFERENCES accounts(id) ON DELETE CASCADE ON UPDATE CASCADE

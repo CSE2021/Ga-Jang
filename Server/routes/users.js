@@ -35,10 +35,10 @@ router.get('/:id', async function(req, res, next) {
 });
 
 router.post('/add', async function(req, res, next) {
-    let { id, loc, name, lating } = req.body;
+    let { id, email, loc, name, rating, account } = req.body;
 
-    var sql = "INSERT INTO accounts (id, loc, name, lating) VALUES(?, ?, ?, ?);"
-    var param = [id, loc, name, lating]
+    var sql = "INSERT INTO accounts (id, email, loc, name, rating, accountNo) VALUES(?, ?, ?, ?, ?, ?);"
+    var param = [id, email, loc, name, rating, account]
     const conn = await pool.getConnection();
     try {
         const ins = await conn.query(sql, param);
@@ -49,6 +49,22 @@ router.post('/add', async function(req, res, next) {
         conn.release();
     }
 });
+
+router.post('/edit-eamil', async function(req, res, next) {
+    let { id, eamil } = req.body;
+
+    var sql = "UPDATE accounts SET accountNo=? WHERE id=?;"
+    var param = [eamil, id];
+    const conn = await pool.getConnection();
+    try {
+        const upd = await conn.query(sql, param);
+        returnResults(false, res, upd[0]);
+    } catch (err) {
+        returnResults(err, res, {});
+    } finally {
+        conn.release();
+    }
+})
 
 router.post('/edit-name', async function(req, res, next) {
     let { id, name } = req.body;
@@ -82,11 +98,27 @@ router.post('/edit-loc', async function(req, res, next) {
     }
 })
 
-router.post('/edit-lating', async function(req, res, next) {
-    let { id, lating } = req.body;
+router.post('/edit-rating', async function(req, res, next) {
+    let { id, rating } = req.body;
 
     var sql = "UPDATE accounts SET lating=? WHERE id=?;"
-    var param = [lating, id];
+    var param = [rating, id];
+    const conn = await pool.getConnection();
+    try {
+        const upd = await conn.query(sql, param);
+        returnResults(false, res, upd[0]);
+    } catch (err) {
+        returnResults(err, res, {});
+    } finally {
+        conn.release();
+    }
+})
+
+router.post('/edit-account', async function(req, res, next) {
+    let { id, account } = req.body;
+
+    var sql = "UPDATE accounts SET accountNo=? WHERE id=?;"
+    var param = [account, id];
     const conn = await pool.getConnection();
     try {
         const upd = await conn.query(sql, param);

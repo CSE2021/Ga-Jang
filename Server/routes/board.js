@@ -22,19 +22,4 @@ router.get('/list/:page', async function(req, res, next) {
     }
 })
 
-router.get('/kind', async function(req, res, next) {
-    let { kind, page } = req.body;
-    var sql = "SELECT * from board WHERE kind=? limit ?, 10;"
-    var param = [kind, page];
-    const conn = await pool.getConnection();
-    try {
-        const sel = await conn.query(sql, param);
-        returnResults(false, res, sel[0]);
-    } catch (err) {
-        returnResults(err, res, {});
-    } finally {
-        conn.release();
-    }
-})
-
 module.exports = router;
