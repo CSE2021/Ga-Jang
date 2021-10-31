@@ -41,9 +41,9 @@ CREATE TABLE IF NOT EXISTS gajang.board (
     siteurl VARCHAR(255) DEFAUlT '',
     view int unsigned NOT NULL DEFAULT 0,
     goal int NOT NULL CHECK(goal > 0),
-    collect int NOT NULL CHECK(collect > 0),
+    collect int NOT NULL DEFAULT 0,
     content text,
-    cnt int unsigned NOT NULL DEFAULT 1,
+    cnt int unsigned NOT NULL DEFAULT 0,
     PRIMARY KEY (bid),
     FOREIGN KEY (wid) REFERENCES accounts(id) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;

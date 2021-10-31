@@ -6,12 +6,10 @@ app.use(express.json());
 
 var userRouter = require('./routes/users');
 var boardRouter = require('./routes/board');
-var chatRouter = require('./routes/chat');
 var contentRouter = require('./routes/content');
 
 app.use('/users', userRouter);
 app.use('/board', boardRouter);
-app.use('/chat', chatRouter);
 app.use('/content', contentRouter);
   
 // http listen port 생성 서버 실행
