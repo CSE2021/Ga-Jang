@@ -64,7 +64,7 @@ router.post('/add', async function(req, res, next) {
 router.post('/edit', async function(req, res, next) {
     let { bid, wid, title, kind, price, thumbnail, fresh, deadline, content, unit, remain, minsize } = req.body;
 
-    var sql1 = "UPDATE board SET title = ?, kind = ?, price = ?, thumbnail = ? WHERE bid=? and wid=?;";
+    var sql1 = "UPDATE board SET thumbnail=?, title = ?, , price = ?, thumbnail = ? WHERE bid=? and wid=?;";
     var sql2 = "UPDATE content SET fresh=?, deadline=?, content=?, unit=?, remain=?, minsize=? WHERE bid=?;";
     var param1 = [title, kind, price, thumbnail, bid, wid];
     var param2 = [fresh, deadline, content, unit, remain, minsize, bid];

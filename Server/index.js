@@ -1,7 +1,23 @@
 //express 모듈 불러오기
 const express = require("express");
+const cors = require('cors');
+
+const corsOpts = {
+    origin : '*',
+
+    method : [
+        'GET',
+        'POST',
+        'DELETE'
+    ],
+
+    allowedHeaders: [
+        'Content-Type',
+    ],
+};
 //express 사용
 const app = express();
+app.use(cors(corsOpts));
 app.use(express.json());
 
 var userRouter = require('./routes/users');
