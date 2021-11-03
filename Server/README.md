@@ -8,11 +8,9 @@ Catholic University CSE - Team Project
 
 ##### 2021/10/28
 
-+ 웹 채팅 삭제 -> 특별한 소통이 필요없고, 요즘은 추가적인 SNS 이미 발달되어있음. 웹에서의 채팅은 무의미 하다고 여겨서 덧글, 또는 다른 방식으로 서비스를 제공할 필요가 있어보임. 오히려 채팅 없이 사용자가 필요한 모든 정보를 제공함으로 사용자의 편리성을 증가시킬 수 있도록 설계
-+ 데이터베이스의 테이블의 세부 컬럼 변경 및 테이블 삭제 및 추가(알림 관리용 테이블이 추가).
-+ API 내부의 SQL 문 수정(컬럼이 변경되었기 때문,,)
-+ 데이터베이스 내부적으로 이벤트 스케줄러를 사용하여 필요없는 데이터는 주기적으로 삭제
-+ ERD 수정,,,
++ CORS Policy 때문에 프론트 웹 브라우저에서 API 리소스에 접근하지 못하는 경우가 발생하여, CORS 모듈을 설치하고 접근 권한을 허용해줌으로 해결했음.
++ 프론트에서의 API 도큐멘테이션을 깔끔하게 하기 위해서 Swagger를 이용하여 정리하는중(~ing)
++ 문제점: Swagger를 js에 같이 작성하게 되면, 사용설명서로는 잘 나올지 모르나, 실제 코드가 엄청 길어져서 가독성이 떨어짐.
 
 ```bash
 $ node index.js
@@ -52,113 +50,6 @@ $ docker run -p <로컬포트>:<내부포트> -d <위에서 설정한 태그명>
 
 ## How To Use..
 
-: accounts 테이블
+Swagger를 사용하였습니다.
 
-| 종류   | 매핑               | 설명                                                      |
-| ------ | ------------------ | --------------------------------------------------------- |
-| Get    | /users/            | Test용 데이터 출력                                        |
-| Get    | /users/list        | accounts 테이블 내에서 위에서 5개의 정보만 가져옴         |
-| Get    | /users/list/:id    | accounts 테이블 내에서 id값에 해당하는 유저 정보 가져오기 |
-| Post   | /users/add         | accounts 테이블에 회원정보 추가                           |
-| Post   | /users/edit-name   | accounts 테이블에서 닉네임 변경                           |
-| Post   | /users/edit-loc    | accounts 테이블에서 지역 변경                             |
-| Post   | /users/edit-lating | accounts 테이블에서 매너지수 변경                         |
-| Delete | /users/del/:id     | accounts 테이블 내에서 id값에 해당하는 유저 정보 삭제     |
-
-```json
-// Post -> /users/add
-{
-	"id" : string,
-	"loc" : string,
-	"name" : string,
-	"lating" : int,
-}
-```
-
-```json
-// Post -> /users/edit-name
-{
-    "id" : string,
-    "name" : string
-}
-```
-
-```json
-//Post -> /users/edit-loc
-{
-    "id" : string,
-    "loc" : string
-}
-```
-
-```json
-//Post -> /users/edit-lating
-{
-    "id" : string,
-    "lating" : string
-}
-```
-
-
-
-: board 테이블
-
-| 종류 | 매핑              | 설명                                                         |
-| ---- | ----------------- | ------------------------------------------------------------ |
-| Get  | /board/           | Test용 데이터 출력                                           |
-| Get  | /board/list/:page | board 테이블 내의 페이지별로 정보 가져오기(1페이지당 10개의 정보) |
-| Get  | /board/kind       | board 테이블 내에서 kind 값에 해당하는 게시글 페이지 별로 가져오기 |
-
-```json
-//Post /board/kind
-{
-    "kind", int,
-    "page", int
-}
-```
-
-
-
-: content 테이블
-
-| 종류   | 매핑          | 설명                           |
-| ------ | ------------- | ------------------------------ |
-| Get    | /content/:bid | bid에 해당하는 게시글 가져오기 |
-| Get    | /content/add  | 게시글 작성 시 내용 삽입       |
-| Post   | /content/edit | 게시글 수정                    |
-| Delete | /board/:bid   | bid에 해당하는 게시글 삭제     |
-
-```json
-//Post /content/add
-{
-    "wid" : "1",
-    "title" : "키보드",
-    "kind" : 1,
-    "price" : 2000,
-    "thumbnail" : "",
-    "fresh" : "s",
-    "deadline" : "2021-10-30",
-    "content" : "사랑해요 연애가중계",
-    "unit" : "개",
-    "remain" : 3,
-    "minsize" : 1
-}
-```
-
-```json
-{
-	"bid" : "1",
-    "wid" : "1",
-    "title" : "키보드",
-    "kind" : 1,
-    "price" : 2000,
-    "thumbnail" : "",
-    "fresh" : "s",
-    "deadline" : "2021-10-30",
-    "content" : "사랑해요 연애가중계",
-    "unit" : "개",
-    "remain" : 3,
-    "minsize" : 1
-}
-```
-
+/api-docs 페이지에서 원하는 데이터에 따라 필요한 파라미터값과 url요청, 반환값의 기본적인 형태를 확인할 수 있습니다.

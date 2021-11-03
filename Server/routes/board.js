@@ -1,4 +1,6 @@
+
 var express = require('express');
+const swaggerJSDoc = require('swagger-jsdoc');
 const pool = require('../database/database');
 const returnResults = require('../errorHandler');
 var router = express.Router();

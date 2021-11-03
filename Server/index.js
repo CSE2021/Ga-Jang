@@ -1,7 +1,10 @@
 //express 모듈 불러오기
 const express = require("express");
+//CORS 모듈 불러오기
 const cors = require('cors');
-
+//swagger 모듈 불러오기
+const { swaggerUi, specs } = require('./swagger/swagger');
+//CORS Option 세팅
 const corsOpts = {
     origin : '*',
 
@@ -17,7 +20,12 @@ const corsOpts = {
 };
 //express 사용
 const app = express();
+//CORS를 정해준 옵션으로 사용
 app.use(cors(corsOpts));
+//swagger path 설정
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
+
 app.use(express.json());
 
 var userRouter = require('./routes/users');
