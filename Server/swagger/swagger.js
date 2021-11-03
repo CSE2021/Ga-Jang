@@ -14,7 +14,7 @@ const options = {
                 description: "Gajang Server"
             }
         ],
-        host: 'shbos.shop:3002'
+        host: 'shbox.shop:3002'
     },
     apis: ['./routes/*.js', './swagger/*']
 };

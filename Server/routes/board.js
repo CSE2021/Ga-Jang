@@ -1,4 +1,35 @@
-
+/**
+ * @swagger
+ * definitions:
+ *  accounts:
+ *      type: object
+ *      required:
+ *          - id
+ *          - email
+ *          - loc
+ *          - name
+ *          - lating
+ *          - accountNo
+ *      properties:
+ *          id:
+ *              type: string
+ *              description: UserID
+ *          email:
+ *              type: string
+ *              description: email Address
+ *          loc:
+ *              type: string
+ *              description: User Location
+ *          name:
+ *              type: string
+ *              description: User Name
+ *          rating:
+ *              type: int
+ *              description: User Manner Rate
+ *          accountNo:
+ *              type: string
+ *              description: User Account Number 
+ */
 var express = require('express');
 const swaggerJSDoc = require('swagger-jsdoc');
 const pool = require('../database/database');
