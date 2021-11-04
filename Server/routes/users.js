@@ -24,7 +24,7 @@
  *              type: string
  *              description: User Name
  *          rating:
- *              type: int
+ *              type: integer
  *              description: User Manner Rate
  *          accountNo:
  *              type: string
