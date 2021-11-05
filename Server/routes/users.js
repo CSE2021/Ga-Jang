@@ -79,28 +79,18 @@ router.get('/list', async function(req, res) {
 
 /**
  * @swagger
- *  /users/:id:
+ *  /users/{userId}:
  *    get:
  *      tags:
  *      - user
  *      description: 회원정보 리스트 중 id값에 해당되는 유저 정보를 가져온다.
  *      produces:
  *      - applicaion/json
- *      responses:
- *       200:
- *        schema:
- *          type: object
- *          properties:
- *              message:
- *                  type: string
- *                  example: success
- *              status:
- *                  type: integer
- *                  example: 200
- *              result:
- *                  type: array
- *                  items:
- *                      $ref: '#/definitions/accounts'
+ *      parameters:
+ *      - name: userId
+ *        in: path
+ *        required: true
+ *        type: integer
  *                          
  */
 router.get('/:id', async function(req, res, next) {
@@ -127,31 +117,26 @@ router.get('/:id', async function(req, res, next) {
  *      produces:
  *      - applicaion/json
  *      parameters:
- *      - name: id
- *        in: body
- *        description: "회원 고유 번호"
+ *      - in: body
  *        required: true
- *        type: string
- *      - name : email
- *        in: body
- *        description: "회원 이메일"
- *        required: true
- *        type: string
- *      - name: loc
- *        in: body
- *        description: "회원 지역"
- *        required: true
- *        type: string
- *      - name: name
- *        in: body
- *        description: "회원 닉네임"
- *        required: true
- *        type: string
- *      - name: accountNo
- *        in: body
- *        description: "회원 계좌번호"
- *        required: true
- *        type: string
+ *        schema:
+ *          type: object
+ *          properties:
+ *              id:
+ *                  type: string
+ *                  example: 1
+ *              email:
+ *                  type: string
+ *                  example: 1111@catholic.ac.kr
+ *              loc:
+ *                  type: string
+ *                  example: 22222
+ *              name:
+ *                  type: string
+ *                  example: 홍길동
+ *              accountNo:
+ *                  type: string
+ *                  example: 1111-111-1111
  *      responses:
  *       200:
  *        schema:
@@ -384,13 +369,18 @@ router.post('/edit-account', async function(req, res, next) {
 
 /**
  * @swagger
- *  /users/:id:
+ *  /users/{userId}:
  *    delete:
  *      tags:
  *      - user
  *      description: 회원정보 리스트 중 id값에 해당되는 유저 정보를 삭제한다.
  *      produces:
  *      - applicaion/json
+ *      parameters:
+ *      - name: userId
+ *        in: path
+ *        required: true
+ *        type: integer
  *      responses:
  *       200:
  *        schema:

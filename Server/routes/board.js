@@ -103,6 +103,37 @@ router.get('/', function(req, res, next) {
     res.send("BOARD API TEST");
 })
 
+/**
+ * @swagger
+ *  /board/{bid}:
+ *    get:
+ *      tags:
+ *      - board
+ *      description: bid에 해당하는 게시글 정보를 가져온다.
+ *      produces:
+ *      - applicaion/json
+ *      parameters:
+ *      - name: bid
+ *        in: path
+ *        required: true
+ *        type: integer
+ *      responses:
+ *       200:
+ *        schema:
+ *          type: object
+ *          properties:
+ *              message:
+ *                  type: string
+ *                  example: success
+ *              status:
+ *                  type: integer
+ *                  example: 200
+ *              result:
+ *                  type: array
+ *                  items:
+ *                      $ref: '#/definitions/board'
+ *                          
+ */
 router.get('/:bid', async function(req, res, next) {
     let bid = req.params.bid;
     var sql1 = "SELECT wid, thumbnail, title, process," + 
@@ -131,6 +162,83 @@ router.get('/:bid', async function(req, res, next) {
         conn.release();
     }
 })
+/**
+ * @swagger
+ *  /board/add:
+ *    post:
+ *      tags:
+ *      - board
+ *      description: 게시글을 등록한다.
+ *      produces:
+ *      - applicaion/json
+ *      parameters:
+ *      - in: body
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *              wid:
+ *                  type: string
+ *                  example: 1
+ *              thumbnail:
+ *                  type: string
+ *                  example: http~~
+ *              title:
+ *                  type: string
+ *                  example: fighting
+ *              recruit:
+ *                  type: date
+ *                  example: 20211105
+ *              recruite:
+ *                  type: date
+ *                  example: 20211105
+ *              ship:
+ *                  type: date
+ *                  example: 20211105
+ *              shipe:
+ *                  type: date
+ *                  example: 20211105
+ *              share:
+ *                  type: date
+ *                  example: 20211105
+ *              sharee:
+ *                  type: date
+ *                  example: 20211105
+ *              place:
+ *                  type: string
+ *                  example: 역곡역앞
+ *              sharetime:
+ *                  type: date-time
+ *                  example: 170000
+ *              mPrice:
+ *                  type: integer
+ *                  example: 500
+ *              siteurl:
+ *                  type: string
+ *              goal:
+ *                  type: integer
+ *                  example: 10000
+ *              content:
+ *                  type: string
+ *                  example: 조미김 팔아요
+ *      responses:
+ *        200:
+ *          schema:
+ *              type: object
+ *              properties:
+ *                  message:
+ *                      type: string
+ *                      example: success
+ *                  status:
+ *                      type: integer
+ *                      example: 200
+ *                  result:
+ *                      type: object
+ *                      properties:
+ *                          bid:
+ *                              type: integer
+ *                                
+ */
 
 router.post('/add', async function(req, res, next) {
     let { wid, thumbnail, title, recruit, recruite, ship, shipe,
@@ -180,16 +288,20 @@ router.post('/edit', async function(req, res, next) {
         conn.release();
     }
 })
-
 /**
  * @swagger
- *  /board/list/:page:
+ *  /board/list/{page}:
  *    get:
  *      tags:
  *      - board
- *      description: 게시글을 페이지 단위로 가져온다
+ *      description: bid에 해당하는 게시글 정보를 가져온다.
  *      produces:
  *      - applicaion/json
+ *      parameters:
+ *      - name: page
+ *        in: path
+ *        required: true
+ *        type: integer
  *      responses:
  *       200:
  *        schema:
@@ -204,26 +316,7 @@ router.post('/edit', async function(req, res, next) {
  *              result:
  *                  type: array
  *                  items:
- *                      type: object
- *                      properties:
- *                          bid:
- *                              type: integer
- *                          wid:
- *                              type: string
- *                          thumbnail:
- *                              type: string
- *                          title:
- *                              type: string
- *                          process:
- *                              type: integer
- *                          recruite:
- *                              type: date
- *                          mPrice:
- *                              type: integer
- *                          remain:
- *                              type: integer
- *                          content:
- *                              type: string
+ *                      $ref: '#/definitions/board'
  */
 router.get('/list/:page', async function(req, res, next) {
     let page = req.params.page;
