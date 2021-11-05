@@ -52,4 +52,8 @@ $ docker run -p <로컬포트>:<내부포트> -d <위에서 설정한 태그명>
 
 Swagger를 사용하였습니다.
 
-/api-docs 페이지에서 원하는 데이터에 따라 필요한 파라미터값과 url요청, 반환값의 기본적인 형태를 확인할 수 있습니다.
+/api-docs 페이지에서 원하는 데이터에 따라 필요한 파라미터값과 url요청, 반환값의 기본적인 형태를 확인할 수 있습니다. 
+
+<Sample>
+
+![캡처](https://github.com/CSE2021/server/blob/main/Server/swagger/example.png)
