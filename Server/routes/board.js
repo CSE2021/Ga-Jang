@@ -97,6 +97,17 @@
 var express = require('express');
 const pool = require('../database/database');
 const returnResults = require('../errorHandler');
+const multer = require('multer');
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, 'uploads/');
+        },
+        filename: function (req, file, cb) {
+            cb(null, new Date().valueOf() + file.originalname);
+        }
+    }),
+});
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
@@ -240,8 +251,14 @@ router.get('/:bid', async function(req, res, next) {
  *                                
  */
 
-router.post('/add', async function(req, res, next) {
-    let { wid, thumbnail, title, recruit, recruite, ship, shipe,
+router.post('/add', upload.array('img'), async function(req, res, next) {
+    var thumbnail;
+    if (req.files.length > 0) {
+        thumbnail = "http://shbox.shop:3002/img/" + req.files[0].filename;
+    } else {
+        thumbnail = "";
+    }
+    let { wid, title, recruit, recruite, ship, shipe,
         share, sharee, place, sharetime, mPrice, siteurl, goal, content } = req.body;
 
     var sql1 = "INSERT INTO board (wid, thumbnail, title, recruit, recruite, ship, shipe, share, sharee, place, sharetime, mPrice, remain, siteurl, goal, content) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
@@ -254,6 +271,12 @@ router.post('/add', async function(req, res, next) {
 
         const ins = await conn.query(sql1, param1);
         const sel = await conn.query(sql2);
+        for(var i = 1; i < req.files.length; i++) {
+            var imgurl = "http://shbox.shop:3002/img/" + req.files[i].filename;
+            var sqlImg = "INSERT INTO imgurl (bid, imgurl) VALUES(?, ?);"
+            var param2 = [sel[0][0].bid, imgurl];
+            const insImg = await conn.query(sqlImg, param2);
+        }
 
         await conn.commit();
         returnResults(false, res, sel[0]);

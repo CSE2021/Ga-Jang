@@ -8,7 +8,7 @@ const upload = multer({
             cb(null, 'uploads/');
         },
         filename: function (req, file, cb) {
-            cb(null, new Date().valueOf() + file.originalname);
+            cb(null, new Date().valueOf());
         }
     }),
 });
@@ -36,7 +36,6 @@ app.use(cors(corsOpts));
 //swagger path 설정
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
-
 app.use(express.json());
 app.use('/img', express.static('uploads'));
 
@@ -47,9 +46,6 @@ var contentRouter = require('./routes/content');
 app.use('/users', userRouter);
 app.use('/board', boardRouter);
 app.use('/content', contentRouter);
-app.post('/up', upload.array('img'), (req, res) => {
-    console.log(req.files);
-})
   
 // http listen port 생성 서버 실행
 app.listen(3002, () => console.log("Server Start :)"));

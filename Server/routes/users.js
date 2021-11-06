@@ -33,6 +33,17 @@
 var express = require('express');
 const returnResults = require('../errorHandler');
 const pool = require('../database/database');
+const multer = require('multer');
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, 'uploads/');
+        },
+        filename: function (req, file, cb) {
+            cb(null, new Date().valueOf() + file.originalname);
+        }
+    }),
+});
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
@@ -106,6 +117,56 @@ router.get('/:id', async function(req, res, next) {
         conn.release();
     }
 });
+/**
+ * @swagger
+ *  /users/id-check:
+ *    post:
+ *      tags:
+ *      - user
+ *      description: id가 존재하는지 확인한다.
+ *      produces:
+ *      - applicaion/json
+ *      parameters:
+ *      - in: body
+ *        required: true
+ *        schema:
+ *          type: object
+ *          properties:
+ *              id:
+ *                  type: string
+ *                  example: 1
+ *      responses:
+ *       200:
+ *        schema:
+ *          type: object
+ *          properties:
+ *              message:
+ *                  type: string
+ *                  example: success
+ *              status:
+ *                  type: integer
+ *                  example: 200
+ *              result:
+ *                  type: object
+ *                  properties:
+ *                     exist:
+ *                       type: integer
+ *                       example: 1           
+ */
+router.post('/id-check', async function(req, res, next) {
+    let user_id = req.body;
+    var sql = "SELECT EXISTS (SELECT * from accounts WHERE id = ?) AS exist;"
+    var param = [user_id];
+    const conn = await pool.getConnection();
+    try {
+        const sel = await conn.query(sql, param);
+        returnResults(false, res, sel[0]);
+    } catch (err) {
+        returnResults(err, res, {});
+    } finally {
+        conn.release();
+    }
+})
 
 /**
  * @swagger
@@ -151,11 +212,17 @@ router.get('/:id', async function(req, res, next) {
  *              result:
  *                  type: object                     
  */
-router.post('/add', async function(req, res, next) {
+router.post('/add', upload.array('img'), async function(req, res, next) {
+    var profileImg
+    if (req.files.length > 0) {
+        profileImg = "http://shbox.shop:3002/img/" + req.files[0].filename;
+    } else {
+        profileImg = "";
+    }
     let { id, email, loc, name, accountNo } = req.body;
 
-    var sql = "INSERT INTO accounts (id, email, loc, name, accountNo) VALUES(?, ?, ?, ?, ?);"
-    var param = [id, email, loc, name, accountNo]
+    var sql = "INSERT INTO accounts (id, email, loc, name, accountNo, profileImg) VALUES(?, ?, ?, ?, ?, ?);"
+    var param = [id, email, loc, name, accountNo, profileImg]
     const conn = await pool.getConnection();
     try {
         const ins = await conn.query(sql, param);

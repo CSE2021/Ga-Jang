@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS gajang.accounts (
     name VARCHAR(16) NOT NULL,
     rating int(10) NOT NULL default 33,
     accountNo VARCHAR(36) NOT NULL,
+    profileImg VARCHAR(255) NOT NULL default '',
     PRIMARY KEY(id)
 )ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
@@ -65,7 +66,7 @@ CREATE TABLE IF NOT EXISTS gajang.customerinfo (
 -- Create img url table
 CREATE TABLE IF NOT EXISTS gajang.imgurl (
     bid int unsigned NOT NULL,
-    imgurl VARCHAR(36) NOT NULL,
+    imgurl VARCHAR(255) NOT NULL,
     FOREIGN KEY (bid) REFERENCES board(bid) ON DELETE CASCADE ON UPDATE CASCADE
 )ENGINE=InnoDB DEFAULT CHARACTER SET=utf8;
 
