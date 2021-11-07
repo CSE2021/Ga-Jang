@@ -153,10 +153,9 @@ router.get('/:bid', async function(req, res, next) {
         const sel2 = await conn.query(sql3);
         
         await conn.commit();
-        var contentInfo = JSON.parse(JSON.stringify(sel[0]));
-        var writerInfo = JSON.parse(JSON.stringify(sel2[0]));
-    
-        returnResults(false, res, {contentInfo, writerInfo});
+        var Info = Object.assign(sel[0][0], sel2[0][0])
+
+        returnResults(false, res, Info);
     } catch (err) {
         await conn.rollback();
         returnResults(err, res, {});
@@ -270,7 +269,7 @@ router.post('/add', upload.array('img'), async function(req, res, next) {
         }
 
         await conn.commit();
-        returnResults(false, res, sel[0]);
+        returnResults(false, res, sel[0][0]);
     } catch (err) {
         await conn.rollback();
         try{
@@ -279,11 +278,10 @@ router.post('/add', upload.array('img'), async function(req, res, next) {
                 fs.unlinkSync(imgurl);
             }
         } catch(error) {
-            if(err.code == 'ENOENT') {
+            if(error.code == 'ENOENT') {
                 console.log("Delete Error");
             }
         }
-        console.log(err);
         returnResults(err, res, {});
     } finally {
         conn.release();
@@ -360,12 +358,35 @@ router.get('/list/:page', async function(req, res, next) {
 
 router.delete('/:bid', async function(req, res, next) {
     let bid = req.params.bid;
-    var sql = "DELETE from board where bid='" + bid + "';";
+    var sql1 = "SELECT thumbnail from board where bid='" + bid +"';";
+    var sql2 = "SELECT imgurl from imgurl where bid='" + bid + "';";
+    var sql3 = "DELETE from board where bid='" + bid + "';";
     const conn = await pool.getConnection();
     try {
-        const del = await conn.query(sql);
+        await conn.beginTransaction();
+
+        const sel1 = await conn.query(sql1);
+        const sel2 = await conn.query(sql2);
+        const del = await conn.query(sql3);
+
+        await conn.commit();
+        if(sel1[0][0].thumbnail.length > 0) {
+            try{
+                var imgurl = sel1[0][0].thumbnail.split('/');
+                fs.fchmod.unlinkSync('uploads/' + imgurl[4]);
+                for(var i = 0; i < sel2[0].length; i++) {
+                    imgurl = sel2[0][i].imgurl.split('/');
+                    fs.unlinkSync('uploads/' + imgurl[4]);
+                }
+            } catch(error) {
+                if(error.code == 'ENOENT') {
+                    console.log("Delete Error");
+                }
+            }
+        }
         returnResults(false, res, del[0]);
     } catch (err) {
+        await conn.rollback();
         returnResults(err, res, {});
     } finally {
         conn.release();

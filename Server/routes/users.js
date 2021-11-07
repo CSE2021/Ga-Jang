@@ -34,6 +34,7 @@ var express = require('express');
 const returnResults = require('../errorHandler');
 const pool = require('../database/database');
 const upload = require('../imageUpload/imgUpl');
+const fs = require('fs');
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
@@ -204,8 +205,8 @@ router.post('/id-check', async function(req, res, next) {
  */
 router.post('/add', upload.single('img'), async function(req, res, next) {
     var profileImg
-    if (req.files.length > 0) {
-        profileImg = "http://shbox.shop:3002/img/" + req.files[0].filename;
+    if (req.file) {
+        profileImg = "http://shbox.shop:3002/img/" + req.file.filename;
     } else {
         profileImg = "";
     }
@@ -218,6 +219,14 @@ router.post('/add', upload.single('img'), async function(req, res, next) {
         const ins = await conn.query(sql, param);
         returnResults(false, res, ins[0]);
     } catch (err) {
+        try{
+            var imgurl = req.file.destination + req.file.filename;
+            fs.unlinkSync(imgurl);
+        } catch(error) {
+            if(error.code == 'ENOENT') {
+                console.log("Delete Error");
+            }
+        }
         returnResults(err, res, {});
     } finally {
         conn.release();
