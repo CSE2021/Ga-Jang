@@ -1,17 +1,5 @@
 //express 모듈 불러오기
 const express = require("express");
-// multer 모듈 불러오기
-const multer = require('multer');
-const upload = multer({
-    storage: multer.diskStorage({
-        destination: function (req, file, cb) {
-            cb(null, 'uploads/');
-        },
-        filename: function (req, file, cb) {
-            cb(null, new Date().valueOf());
-        }
-    }),
-});
 //CORS 모듈 불러오기
 const cors = require('cors');
 const corsOpts = {

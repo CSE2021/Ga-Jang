@@ -33,17 +33,7 @@
 var express = require('express');
 const returnResults = require('../errorHandler');
 const pool = require('../database/database');
-const multer = require('multer');
-const upload = multer({
-    storage: multer.diskStorage({
-        destination: function (req, file, cb) {
-            cb(null, 'uploads/');
-        },
-        filename: function (req, file, cb) {
-            cb(null, new Date().valueOf() + file.originalname);
-        }
-    }),
-});
+const upload = require('../imageUpload/imgUpl');
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
@@ -212,7 +202,7 @@ router.post('/id-check', async function(req, res, next) {
  *              result:
  *                  type: object                     
  */
-router.post('/add', upload.array('img'), async function(req, res, next) {
+router.post('/add', upload.single('img'), async function(req, res, next) {
     var profileImg
     if (req.files.length > 0) {
         profileImg = "http://shbox.shop:3002/img/" + req.files[0].filename;

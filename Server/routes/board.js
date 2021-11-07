@@ -97,17 +97,8 @@
 var express = require('express');
 const pool = require('../database/database');
 const returnResults = require('../errorHandler');
-const multer = require('multer');
-const upload = multer({
-    storage: multer.diskStorage({
-        destination: function (req, file, cb) {
-            cb(null, 'uploads/');
-        },
-        filename: function (req, file, cb) {
-            cb(null, new Date().valueOf() + file.originalname);
-        }
-    }),
-});
+const upload = require('../imageUpload/imgUpl');
+const fs = require('fs');
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
@@ -282,6 +273,17 @@ router.post('/add', upload.array('img'), async function(req, res, next) {
         returnResults(false, res, sel[0]);
     } catch (err) {
         await conn.rollback();
+        try{
+            for(var i = 0; i < req.files.length; i++) {
+                var imgurl = req.files[i].destination + req.files[i].filename;
+                fs.unlinkSync(imgurl);
+            }
+        } catch(error) {
+            if(err.code == 'ENOENT') {
+                console.log("Delete Error");
+            }
+        }
+        console.log("sql error");
         returnResults(err, res, {});
     } finally {
         conn.release();
