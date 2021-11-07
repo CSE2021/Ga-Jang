@@ -283,7 +283,7 @@ router.post('/add', upload.array('img'), async function(req, res, next) {
                 console.log("Delete Error");
             }
         }
-        console.log("sql error");
+        console.log(err);
         returnResults(err, res, {});
     } finally {
         conn.release();
