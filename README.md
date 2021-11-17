@@ -42,9 +42,17 @@ $ docker run -p <로컬포트>:<내부포트> -d <위에서 설정한 태그명>
 
 
 
+## 프로젝트 소개
+
+We Uploaded a Video that Introduce our project!! Follow that Link and Watch Our Video!!!
+
+[![집단지성팀 - GaJang](http://img.youtube.com/vi/gkDq_8E4apw/0.jpg)](https://youtu.be/gkDq_8E4apw)
+
+
+
 ## Database 설계
 
-![캡처](https://github.com/CSE2021/server/blob/main/Server/database/ERD.png)
+![캡처](https://github.com/CSE2021/server/blob/main/database/ERD.png)
 
 
 
@@ -56,4 +64,4 @@ Swagger를 사용하였습니다.
 
 <Sample>
 
-![캡처](https://github.com/CSE2021/server/blob/main/Server/swagger/example.png)
+![캡처](https://github.com/CSE2021/server/blob/main/swagger/example.png)
