@@ -4,7 +4,9 @@
  *    post:
  *      tags:
  *      - board
- *      description: 게시글을 등록한다.
+ *      description: 게시글을 등록한다. multipart/form-data형식이며, 'img'키 값으로 여러장의 이미지 첨부가 가능함
+ *      consumes:
+ *      - multipart/form-data
  *      produces:
  *      - applicaion/json
  *      parameters:
@@ -16,35 +18,38 @@
  *              wid:
  *                  type: string
  *                  example: 1
- *              thumbnail:
- *                  type: string
- *                  example: http~~
  *              title:
  *                  type: string
  *                  example: fighting
  *              recruit:
- *                  type: date
+ *                  type: string
  *                  example: 20211105
  *              recruite:
- *                  type: date
+ *                  type: string
+ *                  format : date
  *                  example: 20211105
  *              ship:
- *                  type: date
+ *                  type: string
+ *                  format : date
  *                  example: 20211105
  *              shipe:
- *                  type: date
+ *                  type: string
+ *                  format : date
  *                  example: 20211105
  *              share:
- *                  type: date
+ *                  type: string
+ *                  format : date
  *                  example: 20211105
  *              sharee:
- *                  type: date
+ *                  type: string
+ *                  format : date
  *                  example: 20211105
  *              place:
  *                  type: string
  *                  example: 역곡역앞
  *              sharetime:
- *                  type: date-time
+ *                  type: string
+ *                  format : datetime
  *                  example: 170000
  *              mPrice:
  *                  type: integer
@@ -57,6 +62,9 @@
  *              content:
  *                  type: string
  *                  example: 조미김 팔아요
+ *              img:
+ *                  type: string
+ *                  format: file
  *      responses:
  *        200:
  *          schema:

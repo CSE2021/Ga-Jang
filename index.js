@@ -28,12 +28,7 @@ app.use(express.json());
 app.use('/img', express.static('uploads'));
 
 var routerMapping = require('./mapping/mapping');
-var boardRouter = require('./routes/board');
-var contentRouter = require('./routes/content');
-
 app.use('/', routerMapping);
-app.use('/board', boardRouter);
-app.use('/content', contentRouter);
   
 // http listen port 생성 서버 실행
 app.listen(3002, () => console.log("Server Start :)"));

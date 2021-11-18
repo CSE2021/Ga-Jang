@@ -1,10 +1,12 @@
 /**
  * @swagger
- *  /users/add:
+ *  /users/register:
  *    post:
  *      tags:
  *      - user
- *      description: 회원정보를 등록한다.
+ *      description: 회원정보를 등록한다. 'img' 키값으로 한장의 이미지 업로드 가능!!
+ *      consumes:
+ *      - multipart/form-data
  *      produces:
  *      - applicaion/json
  *      parameters:
@@ -28,6 +30,9 @@
  *              accountNo:
  *                  type: string
  *                  example: 1111-111-1111
+ *              img:
+ *                  type: string
+ *                  format: file
  *      responses:
  *       200:
  *        schema:

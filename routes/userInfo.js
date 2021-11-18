@@ -12,6 +12,21 @@
  *        in: path
  *        required: true
  *        type: integer
+ *      responses:
+ *       200:
+ *        schema:
+ *          type: object
+ *          properties:
+ *              message:
+ *                  type: string
+ *                  example: success
+ *              status:
+ *                  type: integer
+ *                  example: 200
+ *              result:
+ *                  type: array
+ *                  items:
+ *                      $ref: '#/definitions/accounts'
  *                          
  */
 const pool = require('../database/database');
