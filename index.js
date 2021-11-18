@@ -27,11 +27,11 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use(express.json());
 app.use('/img', express.static('uploads'));
 
-var userRouter = require('./routes/users');
+var routerMapping = require('./mapping/mapping');
 var boardRouter = require('./routes/board');
 var contentRouter = require('./routes/content');
 
-app.use('/users', userRouter);
+app.use('/', routerMapping);
 app.use('/board', boardRouter);
 app.use('/content', contentRouter);
   
