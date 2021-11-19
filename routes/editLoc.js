@@ -8,16 +8,18 @@
  *      produces:
  *      - applicaion/json
  *      parameters:
- *      - name: id
+ *      - name: user
  *        in: body
- *        description: "회원 고유 번호"
- *        required: true
- *        type: string
- *      - name: loc
- *        in: body
- *        description: "회원 지역"
- *        required: true
- *        type: string
+ *        description: 변경하고 싶은 회원 id값과 변경하려고 하는 지역값을 넘겨준다
+ *        schema:
+ *          type: object
+ *          properties:
+ *              id:
+ *                  type: string
+ *                  example: 1
+ *              loc:
+ *                  type: string
+ *                  example: kimcheon
  *      responses:
  *       200:
  *        schema:

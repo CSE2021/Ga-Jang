@@ -8,16 +8,18 @@
  *      produces:
  *      - applicaion/json
  *      parameters:
- *      - name: id
+ *      - name: user
  *        in: body
- *        description: "회원 고유 번호"
- *        required: true
- *        type: string
- *      - name : email
- *        in: body
- *        description: "회원 이메일"
- *        required: true
- *        type: string
+ *        description: 변경하려는 회원 id값과 변경하려는 email 값을 넘겨준다
+ *        schema:
+ *          type: object
+ *          properties:
+ *              id:
+ *                  type: string
+ *                  example: 1
+ *              email:
+ *                  type: string
+ *                  example: hong@catholic.ac.kr
  *      responses:
  *       200:
  *        schema:

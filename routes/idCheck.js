@@ -9,7 +9,8 @@
  *      - applicaion/json
  *      parameters:
  *      - in: body
- *        required: true
+ *        name: id
+ *        description: 확인하고 싶은 id값을 넘겨준다.
  *        schema:
  *          type: object
  *          properties:

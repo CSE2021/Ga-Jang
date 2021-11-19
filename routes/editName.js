@@ -8,16 +8,18 @@
  *      produces:
  *      - applicaion/json
  *      parameters:
- *      - name: id
+ *      - name: user
  *        in: body
- *        description: "회원 고유 번호"
- *        required: true
- *        type: string
- *      - name: name
- *        in: body
- *        description: "회원 닉네임"
- *        required: true
- *        type: string
+ *        description: 변경하고 싶은 회원의 id값과 변경하려는 닉네임을 넘겨준다
+ *        schema:
+ *          type: object
+ *          properties:
+ *              id:
+ *                  type: string
+ *                  example: 1
+ *              name:
+ *                  type: string
+ *                  example: 홍길동
  *      responses:
  *       200:
  *        schema:

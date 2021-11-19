@@ -8,16 +8,18 @@
  *      produces:
  *      - applicaion/json
  *      parameters:
- *      - name: id
+ *      - name: user
  *        in: body
- *        description: "회원 고유 번호"
- *        required: true
- *        type: string
- *      - name: accountNo
- *        in: body
- *        description: "회원 계좌번호"
- *        required: true
- *        type: string
+ *        description: 변경하려는 회원 id값과 변경하려는 계좌번호 값을 넘겨준다
+ *        schema:
+ *          type: object
+ *          properties:
+ *              id:
+ *                  type: string
+ *                  example: 1
+ *              account:
+ *                  type: string
+ *                  example: kimcheon
  *      responses:
  *       200:
  *        schema:

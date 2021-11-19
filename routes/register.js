@@ -10,29 +10,34 @@
  *      produces:
  *      - applicaion/json
  *      parameters:
- *      - in: body
- *        required: true
- *        schema:
- *          type: object
- *          properties:
- *              id:
- *                  type: string
- *                  example: 1
- *              email:
- *                  type: string
- *                  example: 1111@catholic.ac.kr
- *              loc:
- *                  type: string
- *                  example: 22222
- *              name:
- *                  type: string
- *                  example: 홍길동
- *              accountNo:
- *                  type: string
- *                  example: 1111-111-1111
- *              img:
- *                  type: string
- *                  format: file
+ *      - in: formData
+ *        name: id
+ *        type: string
+ *        description: 회원 고유 ID값
+ *      - in: formData
+ *        name: email
+ *        type: string
+ *        description: 회원 e-mail 정보
+ *      - in: formData
+ *        name: loc
+ *        type: string
+ *        description: 회원 위치 정보
+ *      - in: formData
+ *        name: name
+ *        type: string
+ *        description: 회원 닉네임
+ *      - in: formData
+ *        name: rating
+ *        type: string
+ *        description: 회원 매너 지수
+ *      - in: formData
+ *        name: accountNo
+ *        type: string
+ *        description: 회원 계좌번호
+ *      - in: formData
+ *        name: img
+ *        type: file
+ *        description: 회원 프로필 이미지
  *      responses:
  *       200:
  *        schema:

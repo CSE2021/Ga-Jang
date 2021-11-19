@@ -28,7 +28,10 @@
  *              description: User Manner Rate
  *          accountNo:
  *              type: string
- *              description: User Account Number 
+ *              description: User Account Number
+ *          profileImg:
+ *              type: string
+ *              description: User ProfileImg Link
  */
 /**
  * @swagger
