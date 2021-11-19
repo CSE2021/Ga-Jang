@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS gajang.accounts (
     email VARCHAR(64) NOT NULL,
     loc VARCHAR(36) NOT NULL,
     name VARCHAR(16) NOT NULL,
-    rating int(10) NOT NULL default 33,
+    rating int(10) NOT NULL default 36,
     accountNo VARCHAR(36) NOT NULL,
     profileImg VARCHAR(255) NOT NULL default '',
     PRIMARY KEY(id)

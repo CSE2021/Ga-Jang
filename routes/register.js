@@ -27,10 +27,6 @@
  *        type: string
  *        description: 회원 닉네임
  *      - in: formData
- *        name: rating
- *        type: string
- *        description: 회원 매너 지수
- *      - in: formData
  *        name: accountNo
  *        type: string
  *        description: 회원 계좌번호
