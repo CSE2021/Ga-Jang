@@ -11,6 +11,7 @@ const {editNameAPI} = require('../routes/editName');
 const {editLocAPI} = require('../routes/editLoc');
 const {editAccountAPI} = require('../routes/editAccount');
 const {userDeleteAPI} = require('../routes/userDelete');
+const {loginAPI} = require('../routes/login');
 
 const {getContentAPI} = require('../routes/getContent');
 const {postingAPI} = require('../routes/posting');
@@ -24,6 +25,7 @@ router.get('/', testAPI);
 router.get('/users/list', userListAPI);
 router.get('/users/:id', userInfoAPI);
 router.post('/users/idCheck', idCheckAPI);
+router.post('/users/login', loginAPI);
 router.post('/users/register', upload.single('img'), registerAPI);
 router.post('/users/edit-email', editEmailAPI);
 router.post('/users/edit-name', editNameAPI);

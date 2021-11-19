@@ -10,61 +10,79 @@
  *      produces:
  *      - applicaion/json
  *      parameters:
- *      - in: body
- *        required: true
- *        schema:
- *          type: object
- *          properties:
- *              wid:
- *                  type: string
- *                  example: 1
- *              title:
- *                  type: string
- *                  example: fighting
- *              recruit:
- *                  type: string
- *                  example: 20211105
- *              recruite:
- *                  type: string
- *                  format : date
- *                  example: 20211105
- *              ship:
- *                  type: string
- *                  format : date
- *                  example: 20211105
- *              shipe:
- *                  type: string
- *                  format : date
- *                  example: 20211105
- *              share:
- *                  type: string
- *                  format : date
- *                  example: 20211105
- *              sharee:
- *                  type: string
- *                  format : date
- *                  example: 20211105
- *              place:
- *                  type: string
- *                  example: 역곡역앞
- *              sharetime:
- *                  type: string
- *                  format : datetime
- *                  example: 170000
- *              mPrice:
- *                  type: integer
- *                  example: 500
- *              siteurl:
- *                  type: string
- *              goal:
- *                  type: integer
- *                  example: 10000
- *              content:
- *                  type: string
- *                  example: 조미김 팔아요
- *              img:
- *                  type: string
- *                  format: file
+ *      - in: formData
+ *        name: wid
+ *        type: string
+ *        description: 회원 고유 ID값
+ *      - in: formData
+ *        name: title
+ *        type: string
+ *        description: 게시글 제목
+ *      - in: formData
+ *        name: recruit
+ *        type: string
+ *        format: date
+ *        description: 공구 모집 시작일
+ *        example: 211103
+ *      - in: formData
+ *        name: recruite
+ *        type: string
+ *        format: date
+ *        description: 공구 모집 마감일
+ *      - in: formData
+ *        name: ship
+ *        type: string
+ *        format: date
+ *        description: 배송 시작 예정일
+ *      - in: formData
+ *        name: shipe
+ *        type: string
+ *        format: date
+ *        description: 배송 마감 예정일
+ *      - in: formData
+ *        name: share
+ *        type: string
+ *        format: date
+ *        description: 분배 시작 예정일
+ *      - in: formData
+ *        name: sharee
+ *        type: string
+ *        format: date
+ *        description: 분배 마감 예정일
+ *      - in: formData
+ *        name: place
+ *        type: string
+ *        description: 상품 분배 장소
+ *      - in: formData
+ *        name: sharetime
+ *        type: string
+ *        format: datetime
+ *        description: 상품 분배 예정 시각
+ *        example: 170000
+ *      - in: formData
+ *        name: mPrice
+ *        type: integer
+ *        description: 상품을 구매가능한 최소 가격
+ *      - in: formData
+ *        name: siteurl
+ *        type: string
+ *        description: 공동 구매 상품 설명 상세페이지\
+ *      - in: formData
+ *        name: goal
+ *        type: integer
+ *        description: 공동구매 목표 금액
+ *      - in: formData
+ *        name: content
+ *        type: string
+ *        description: 게시글 내용
+ *      - in: formData
+ *        name: img
+ *        type: file
+ *        description: 상품 사진(img 키로 여러개의 사진 전송 가능!! 1번째 사진이 자동으로 썸네일로 지정됨)
+ *      - in: formData
+ *        name: img
+ *        type: file
+ *        description: 상품 사진(똑같은 img키로 여러장의 사진 업로드 가능!!(최대 10개), 확장자 jpeg, jpg, png, gif만 허용)
  *      responses:
  *        200:
  *          schema:
