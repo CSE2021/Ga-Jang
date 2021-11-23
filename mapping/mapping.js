@@ -24,7 +24,7 @@ router.get('/', testAPI);
 
 router.get('/users/list', userListAPI);
 router.get('/users/:id', userInfoAPI);
-router.post('/users/idCheck', nameCheckAPI);
+router.post('/users/nameCheck', nameCheckAPI);
 router.post('/users/login', loginAPI);
 router.post('/users/register', upload.single('img'), registerAPI);
 router.post('/users/edit-email', editEmailAPI);
