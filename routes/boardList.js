@@ -130,7 +130,7 @@ const returnResults = require('../errorHandler');
 async function boardListAPI(req, res) {
     let page = req.params.page;
     var num = parseInt((page-1) * 5);
-    var sql = "SELECT bid, wid, thumbnail, title, process, DATE_FORMAT(recruite, '%Y-%m-%d') AS recruite, mprice, remain from board ORDER BY wdate desc limit " + num + ", 5;"
+    var sql = "SELECT bid, wid, thumbnail, title, process, DATE_FORMAT(recruite, '%Y-%m-%d') AS recruite, mprice, remain, content from board ORDER BY wdate desc limit " + num + ", 5;"
     const conn = await pool.getConnection();
     try {
         const sel = await conn.query(sql);

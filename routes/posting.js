@@ -66,7 +66,7 @@
  *      - in: formData
  *        name: siteurl
  *        type: string
- *        description: 공동 구매 상품 설명 상세페이지\
+ *        description: 공동 구매 상품 설명 상세페이지
  *      - in: formData
  *        name: goal
  *        type: integer
@@ -78,11 +78,7 @@
  *      - in: formData
  *        name: img
  *        type: file
- *        description: 상품 사진(img 키로 여러개의 사진 전송 가능!! 1번째 사진이 자동으로 썸네일로 지정됨)
- *      - in: formData
- *        name: img
- *        type: file
- *        description: 상품 사진(똑같은 img키로 여러장의 사진 업로드 가능!!(최대 10개), 확장자 jpeg, jpg, png, gif만 허용)
+ *        description: 상품 사진(img 키로 여러개의 사진 전송 가능!! 1번째 사진이 자동으로 썸네일로 지정됨), (똑같은 img키로 여러장의 사진 업로드 가능!!(최대 10개), 확장자 jpeg, jpg, png, gif만 허용)
  *      responses:
  *        200:
  *          schema:

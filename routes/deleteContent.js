@@ -1,6 +1,6 @@
 /**
  * @swagger
- *  /users/{bid}:
+ *  /board/{bid}:
  *    delete:
  *      tags:
  *      - board
