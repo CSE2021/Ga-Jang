@@ -38,9 +38,9 @@
  const returnResults = require('../errorHandler');
 
 async function loginAPI(req, res) {
-    let user_id = req.body;
+    let {id} = req.body;
     var sql = "SELECT * from accounts WHERE id = ?;"
-    var param = [user_id];
+    var param = [id];
     const conn = await pool.getConnection();
     try {
         const sel = await conn.query(sql, param);

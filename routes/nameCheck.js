@@ -39,9 +39,9 @@ const pool = require('../database/database');
 const returnResults = require('../errorHandler');
 
 async function nameCheckAPI(req, res) {
-    let user_id = req.body;
+    let {name} = req.body;
     var sql = "SELECT EXISTS (SELECT * from accounts WHERE name = ?) AS exist;"
-    var param = [user_id];
+    var param = [name];
     const conn = await pool.getConnection();
     try {
         const sel = await conn.query(sql, param);

@@ -39,10 +39,10 @@ const pool = require('../database/database');
 const returnResults = require('../errorHandler');
 
 async function editEmailAPI(req, res) {
-    let { id, eamil } = req.body;
+    let { id, email } = req.body;
 
     var sql = "UPDATE accounts SET accountNo=? WHERE id=?;"
-    var param = [eamil, id];
+    var param = [email, id];
     const conn = await pool.getConnection();
     try {
         const upd = await conn.query(sql, param);
