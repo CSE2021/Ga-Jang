@@ -4,7 +4,7 @@ const {testAPI} = require('../routes/test');
 
 const {userListAPI} = require('../routes/userList');
 const {userInfoAPI} = require('../routes/userInfo');
-const {idCheckAPI} = require('../routes/idCheck');
+const {nameCheckAPI} = require('../routes/nameCheck');
 const {registerAPI} = require('../routes/register');
 const {editEmailAPI} = require('../routes/editEmail');
 const {editNameAPI} = require('../routes/editName');
@@ -24,7 +24,7 @@ router.get('/', testAPI);
 
 router.get('/users/list', userListAPI);
 router.get('/users/:id', userInfoAPI);
-router.post('/users/idCheck', idCheckAPI);
+router.post('/users/idCheck', nameCheckAPI);
 router.post('/users/login', loginAPI);
 router.post('/users/register', upload.single('img'), registerAPI);
 router.post('/users/edit-email', editEmailAPI);

@@ -1,22 +1,22 @@
 /**
  * @swagger
- *  /users/idCheck:
+ *  /users/nameCheck:
  *    post:
  *      tags:
  *      - user
- *      description: id가 존재하는지 확인한다.
+ *      description: 닉네임이 존재하는지 확인한다.
  *      produces:
  *      - applicaion/json
  *      parameters:
  *      - in: body
- *        name: id
- *        description: 확인하고 싶은 id값을 넘겨준다.
+ *        name: name
+ *        description: 확인하고 싶은 닉네임을 넘겨준다.
  *        schema:
  *          type: object
  *          properties:
- *              id:
+ *              name:
  *                  type: string
- *                  example: 1
+ *                  example: 길동이는아가야
  *      responses:
  *       200:
  *        schema:
@@ -38,9 +38,9 @@
 const pool = require('../database/database');
 const returnResults = require('../errorHandler');
 
-async function idCheckAPI(req, res) {
+async function nameCheckAPI(req, res) {
     let user_id = req.body;
-    var sql = "SELECT EXISTS (SELECT * from accounts WHERE id = ?) AS exist;"
+    var sql = "SELECT EXISTS (SELECT * from accounts WHERE name = ?) AS exist;"
     var param = [user_id];
     const conn = await pool.getConnection();
     try {
@@ -54,5 +54,5 @@ async function idCheckAPI(req, res) {
 }
 
 module.exports = {
-    idCheckAPI : idCheckAPI
+    nameCheckAPI : nameCheckAPI
 }
