@@ -122,7 +122,36 @@
  *              result:
  *                  type: array
  *                  items:
- *                      $ref: '#/definitions/board'
+ *                      type: object
+ *                      properties:
+ *                          bid:
+ *                              type: integer
+ *                              example: 1
+ *                          wid:
+ *                              type: string
+ *                              example: sangyeon
+ *                          thumbnail:
+ *                              type: string
+ *                              example: http://shbox.shop:3002/img/111111.jpg
+ *                          title:
+ *                              type: string
+ *                              example: 양파 팔아요
+ *                          process:
+ *                              type: integer
+ *                              example: 0
+ *                          recruite:
+ *                              type: string
+ *                              format: date
+ *                              example: 0
+ *                          mprice:
+ *                              type: integer
+ *                              example: 500
+ *                          remain:
+ *                              type: integer
+ *                              example: 8500
+ *                          content:
+ *                              type: string
+ *                              example: 공구 할사람 구해요
  */
 const pool = require('../database/database');
 const returnResults = require('../errorHandler');
