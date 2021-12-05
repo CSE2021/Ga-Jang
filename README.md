@@ -48,6 +48,8 @@ We Uploaded a Video that Introduce our project!! Follow that Link and Watch Our 
 
 [![집단지성팀 - GaJang](http://img.youtube.com/vi/gkDq_8E4apw/0.jpg)](https://youtu.be/gkDq_8E4apw)
 
+[![집단지성팀 - GaJang](http://img.youtube.com/vi/UG4jRxeNIYg/0.jpg)](https://youtu.be/UG4jRxeNIYg)
+
 
 
 ## Database 설계
